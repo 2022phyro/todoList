@@ -1,0 +1,53 @@
+.auth-wrapper {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--primary);
+}
+
+.auth-inner {
+    width: 100%;
+    max-width: 400px;
+    max-height: 400px;
+    height: 100%;
+    padding: 2em;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0 0 1em #00000033;
+    transform: rotate(-5deg);
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    transition: all 0.25s ease;
+}
+
+.auth-inner > * {
+    transform: rotate(5deg);
+}
+.auth-inner.signup {
+    transform: rotate(5deg);
+}
+.auth-inner.signup > * {
+    transform: rotate(-5deg);
+}
+form {
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    text-align: left;
+}
+input {
+    font-size: 14px;
+    padding: 0.5em;
+    outline: none;
+    background-color: transparent;
+    border: 1px solid #00000033;
+    max-width: 280px;
+    width: 100%;
+    font-family: 'Dekko', sans-serif;
+}

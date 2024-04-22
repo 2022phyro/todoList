@@ -1,20 +1,20 @@
 import {
   createBrowserRouter,
 } from "react-router-dom";
-import LandingPage from "../src/Landing";
-
+import LandingPage from "../src/LandingPage";
+import Auth from "../src/Auth";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: LandingPage(),
+    element: <LandingPage/>,
   },
   {
-    path: "about",
+    path: "notes",
     element: <div>About</div>,
   },
   {
     path: "auth",
-    element: <div>Auth</div>,
+    element: <Auth/>,
   }
 ]);
 
