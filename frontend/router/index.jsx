@@ -3,6 +3,7 @@ import {
 } from "react-router-dom";
 import LandingPage from "../src/LandingPage";
 import Auth from "../src/Auth";
+import Notes from "../src/Notes"
 const router = createBrowserRouter([
   {
     path: "/",
@@ -10,7 +11,7 @@ const router = createBrowserRouter([
   },
   {
     path: "notes",
-    element: <div>About</div>,
+    element: <Notes/>,
   },
   {
     path: "auth",
