@@ -1,0 +1,49 @@
+.landing {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    flex-basis: 50%;
+    align-items: center;
+    justify-content: center;
+    background: #E1BB6F;
+}
+.landing-text {
+    width: 50%;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: flex-start;
+    font-family: 'Dekko', sans-serif;
+    font-weight: 600px;
+    padding: 30px;
+    text-align: left;
+}
+.landing-text p {
+    font-size: 24px;
+}
+.landing-img {
+    display: flex;
+    justify-items: center;
+    width: 50%;
+    overflow: hidden;
+    position: relative;
+    background-color: rgba(0,0,0,0.1);
+    background-size: 80%;
+    border-radius: 32.23px;
+    transform: rotate(5deg);
+}
+
+.landing-img > * {
+    transform: rotate(-5deg);
+}.img1 {
+    width: 100%;
+}
+.img2 {
+    width: 60%;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
