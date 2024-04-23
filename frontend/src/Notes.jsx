@@ -62,6 +62,7 @@ export default function Notes() {
 				danger: false,
 				close: function() {
 					setPopup({})
+					setActions({})
 				}
 			})
 			break
@@ -75,6 +76,7 @@ export default function Notes() {
 				danger: true,
 				close: function() {
 					setPopup({})
+					setActions({})
 				}
 			})
 			break
@@ -85,12 +87,15 @@ export default function Notes() {
 				decision: false,
 				close: function() {
 					setPopup({})
+					setActions({})
+				},
+				send: function (data) {
+					setNotes([...notes, data])
 				}
 			})
 			break
 		}
 	}
-	setActions({})
   }
 
   const logout = () => {
@@ -125,6 +130,9 @@ useEffect(() => {
 useEffect(() => {
 	handleActions()
 }, [actions])
+useEffect(() => {
+
+})
   return (
     <div className="notes-wrapper">
       <header>

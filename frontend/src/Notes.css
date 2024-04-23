@@ -13,6 +13,7 @@ header .profile {
     border: 1px solid var(--primary);
     display: flex;
     flex-flow: column;
+	z-index: 1;
     align-items: flex-start;
     gap: 5px;
     width: fit-content;
@@ -60,10 +61,12 @@ header .profile.active p {
 }
 .notes-body {
 	height: calc(100vh - 50px);
-	width: 100%;
-	max-width: 600px;
-	padding: 20px;
-	border: 1px solid red;
+	width: inherit;
+	max-width: 100%;
+	padding: 0 60px 150px 60px;
+	padding-top: 0;
+	padding-bottom: 150px;
+	border: 0px 2px 0px 2px solid var(--primary-dark);
 	display: flex;
 	flex-flow: column;
 	overflow: auto;
