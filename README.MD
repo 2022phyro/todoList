@@ -16,7 +16,7 @@ Navigate to the backend directory
 cd backend
 ```
 Add a .env file in the root directory of the backend folder and add the following environment variables
-```bash
+```env .env
 DB_USER=your_db_user
 DB_PASSWORD=your_db_password
 DB_HOST=your_db_host
@@ -46,7 +46,7 @@ Install the dependencies
 npm install
 ```
 Set the base url for the api in the src/config.js files Thisbshould be where the backend is hosted
-```javascript
+```javascript src/config.js
 export const BASE_URL = 'http://localhost:5000';
 ```
 To preview the server you can run
