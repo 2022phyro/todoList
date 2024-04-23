@@ -10,6 +10,7 @@ export default function Notes() {
   const [notes, setNotes] = useState([]);
   const [groupedNotes, setGroupedNotes] = useState([]);
   const [actions, setActions] = useState({});
+  const [popup, setPopup] = useState({})
   const toggleProfile = () => {
     console.log("yay");
     setProfile(!profile);
@@ -29,7 +30,7 @@ export default function Notes() {
     fetchTodos();
   }, []);
 
-  const handleActions = async () => {
+   const handleActions = async () => {
 	if (!actions) return
 	switch(actions.type) {
 		case "deleteNote": {
@@ -52,9 +53,57 @@ export default function Notes() {
 			}
 			break;
 		}
+		case 'logout': {
+			setPopup({
+				active: true,
+				decision: 'true',
+				message: "Are you sure you want to logout",
+				action: 'Logout',
+				danger: false,
+				close: function() {
+					setPopup({})
+				}
+			})
+			break
+		}
+		case 'deleteAccount': {
+			setPopup({
+				active: true,
+				decision: true,
+				message: "Are you sure you want to delete youe account? You will lose all data",
+				action: 'Delete',
+				danger: true,
+				close: function() {
+					setPopup({})
+				}
+			})
+			break
+		}
+		case 'newNote': {
+			setPopup({
+				active: true,
+				decision: false,
+				close: function() {
+					setPopup({})
+				}
+			})
+			break
+		}
 	}
+	setActions({})
   }
 
+  const logout = () => {
+	setProfile(false)
+	setActions({type: 'logout'})
+  }
+  const deleteAccount = () => {
+	setProfile(false)
+	setActions({type: 'deleteAccount'})
+  }
+  const newNote = () => {
+	setActions({type: 'newNote'})
+  }
 useEffect(() => {
   if (notes && notes.length > 0) {
     const groupedNotes = notes.reduce((groups, note) => {
@@ -81,8 +130,8 @@ useEffect(() => {
       <header>
         <div className={`profile ${profile ? "active" : ""}`}>
           <Icon name="account_circle" onClick={toggleProfile} />
-          <p>Logout</p>
-          <p>Delete Account</p>
+          <p onClick={logout}>Logout</p>
+          <p onClick={deleteAccount}>Delete Account</p>
         </div>
       </header>
       <div className="notes-body">
@@ -97,8 +146,8 @@ useEffect(() => {
           </div>
         ))}
       </div>
-	  <button className="add-note b-pri"><Icon name="add"/><span className="text">Add note</span></button>
-	  <PopUp/>
+	  <button onClick={newNote} className="add-note b-pri"><Icon name="add"/><span className="text">Add note</span></button>
+	  {popup.active && <PopUp {...popup}/>}
     </div>
   );
 }
