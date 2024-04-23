@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser')
 const cors = require('cors');
 const helmet = require('helmet');
 const UserRouter = require('./src/routes/user');
@@ -8,18 +9,21 @@ const TodoRouter = require('./src/routes/todo');
 const app = express();
 const allowedOrigins = ['http://localhost:5173', 'http://example.com'];
 
-app.use(cors({
-  origin: function (origin, callback) {
-    if (allowedOrigins.includes(origin)) {
-      callback(null, origin);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
-}));
+ app.use(cors({
+   origin: function (origin, callback) {
+     if (allowedOrigins.includes(origin)) {
+       callback(null, origin);
+     } else {
+       callback(new Error('Not allowed by CORS'));
+     }
+   },
+   credentials: true,
+ }));
+//app.use(cors())
 app.use(morgan('dev'));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser())
 app.use(helmet());
 app.get('/', (req, res) => {
     res.send('Hello, World!');

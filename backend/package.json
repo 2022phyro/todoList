@@ -4,8 +4,11 @@
   "description": "A todolist project with simple abilities to manipulate notes",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "npm run test",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "deploy": "git subtree push --prefix backend heroku main",
+    "logs:prod": "heroku logs --tail"
   },
   "repository": {
     "type": "git",

@@ -29,10 +29,26 @@ class ValidationError extends Error {
     this.statusCode = 400;
   }
 }
+class LoginError extends Error {
+  constructor(message = 'Login Error') {
+    super(message);
+    this.name = 'LoginError';
+    this.statusCode = 400;
+  }
+}
+class TokenError extends Error {
+  constructor(message = 'Token Error') {
+    super(message);
+    this.name = 'TokenError';
+    this.statusCode = 401;
+  }
 
+}
 module.exports = {
   NotFoundError,
   NotPermittedError,
   NotAuthenticatedError,
-  ValidationError
+  ValidationError,
+  LoginError,
+  TokenError
 }

@@ -4,7 +4,7 @@ const sequelize = require('../config/postgres');
 const Token = sequelize.define('Token', {
   id: {
     type: DataTypes.UUID,
-    defaultValue: Sequelize.UUIDV4,
+    defaultValue: DataTypes.UUIDV4,
     primaryKey: true
   },
   key: {
@@ -23,5 +23,12 @@ const Token = sequelize.define('Token', {
     }
   ]
 });
+Token.sync()
+    .then(() => {
+        console.log('Token table created successfully.');
+    })
+    .catch((error) => {
+        console.error('Error creating Token table:', error);
+    });
 
 module.exports = Token;

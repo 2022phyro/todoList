@@ -4,7 +4,7 @@ const sequelize = require('../config/postgres');
 const User = sequelize.define('User', {
   id: {
     type: DataTypes.UUID,
-    defaultValue: Sequelize.UUIDV4,
+    defaultValue: DataTypes.UUIDV4,
     primaryKey: true
   },
   email: {
@@ -18,5 +18,11 @@ const User = sequelize.define('User', {
   }
 }
 );
-
+User.sync()
+    .then(() => {
+        console.log('User table created successfully.');
+    })
+    .catch((error) => {
+        console.error('Error creating User table:', error);
+    });
 module.exports = User;

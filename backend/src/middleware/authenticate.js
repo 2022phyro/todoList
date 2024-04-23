@@ -1,58 +1,42 @@
 const jwt = require('jsonwebtoken')
-const Org = require('../DAO/org')
-const App = require('../DAO/app')
 const TokenDAO = require('../DAO/token')
-const mongoose = require('mongoose')
-const { getErrorResponse } = require('../../utils/response')
+const { response } = require('../utils/formats')
+const { getUser } = require('../DAO/user')
+const { verifyToken } = require('../utils/tokens')
+const { NotFoundError } = require('../utils/errors')
 
 async function authenticateJWT (req, res, next) {
-  const { appId } = req.params
   const authHeader = req.headers.authorization
   if (authHeader) {
     const [bearer, token] = authHeader.split(' ')
     const accepted = process.env.BEARER.split(',')
     if (!accepted.includes(bearer) && !token) {
-      return res.status(401).json(getErrorResponse(401, 'Authentication failed', { auth: ['Invalid token'] }))
+      return res.status(401).json(response(401, {}, { error: 'Invalid token' }))
     }
-    if (await TokenDAO.isBlacklisted(token, 'access')) {
-      return res.status(401).json(getErrorResponse(401, 'Authentication failed', { auth: ['Token is blacklisted'] }))
+    if (await TokenDAO.isBlacklisted(token)) {
+      return res.status(401).json(response(401, {}, { error: 'Token is blacklisted' }))
     }
     try {
-      // Decode the token to get the payload without verifying
+      const [status, msg ] = verifyToken(token)
+      if (!status) {
+        return res.status(401).json(response(401, {}, { error: msg }))
+      }
       const decoded = jwt.decode(token)
-
-      // Get the app
-      const org = await Org.get(decoded.sub)
-      if (!org) {
-        return res.status(401).json(getErrorResponse(401, 'Authentication failed', { auth: ['Organization not found'] }))
-      }
-      // Verify the token with the app's secret
-      jwt.verify(token, org.secret.slice(0, 16), { algorithms: ['HS256'] })
-      // Add the app to the request
-      req.org = org
+      console.log(decoded)
+      const user = await getUser(decoded.sub)
+      req.user = user
       req.token = token
-      if (appId) {
-        try {
-          const app = await App.getApp(appId)
-          if (!app) {
-            return res.status(401).json(getErrorResponse(404, 'Not found', { auth: ['App not found'] }))
-          }
-          req.app = app
-        } catch (error) {
-          if (error instanceof mongoose.Error.CastError) {
-            return res.status(400).json(getErrorResponse(400, 'Bad Request', { auth: ['Invalid App ID'] }))
-          }
-          console.error(error)
-          return res.status(500).json(getErrorResponse(500, 'Internal Server Error', { auth: ['Unexpected error'] }))
-        }
-      }
       next()
     } catch (error) {
-      console.error(error)
-      return res.status(401).json(getErrorResponse(401, 'Authentication failed', { auth: ['Invalid token'] }))
+      if (error instanceof NotFoundError) {
+        return res.status(404).json(response(404, {}, { error: error.message})); 
+      } else {
+        console.error(error)
+        return res.status(401).json(response(401, {}, { error: "Invalid token" }));
+      }  
     }
   } else {
-    return res.status(401).json(getErrorResponse(401, 'Authentication failed', { auth: ['No token provided'] }))
+    return res.status(401).json(response(401, {}, { error: 'No token provided' }))
   }
 }
 

@@ -8,7 +8,6 @@ async function blacklist(key, type) {
     }
 }
 
-// Function to check if a token exists in the Token model
 async function isBlacklisted(key) {
     try {
         const token = await Token.findOne({ where: { key: key } })
@@ -18,7 +17,6 @@ async function isBlacklisted(key) {
     }
 }
 
-// Export the functions
 module.exports = {
     blacklist,
     isBlacklisted
