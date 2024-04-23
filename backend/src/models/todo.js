@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/postgres');
-
+const User = require('./user')
 // Define the Todo model
 const Todo = sequelize.define('Todo', {
     id: {
@@ -24,7 +24,7 @@ const Todo = sequelize.define('Todo', {
     type: DataTypes.UUID,
     allowNull: false,
     references: {
-      model: 'User',
+      model: User,
       key: 'id'
     },
     onDelete: 'CASCADE'
@@ -33,7 +33,7 @@ const Todo = sequelize.define('Todo', {
 
 Todo.sync()
     .then(() => {
-        console.log('Todo table created successfully.');
+        console.log('Todo table synced successfully.');
     })
     .catch((error) => {
         console.error('Error creating Todo table:', error);

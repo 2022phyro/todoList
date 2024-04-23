@@ -44,6 +44,7 @@ async function deleteTodo (req, res) {
     }
 
 }
+}
 
 async function toggleTodo (req, res) {
     try {
@@ -57,6 +58,7 @@ async function toggleTodo (req, res) {
 			}  else {
 					console.error(error)
 					return res.status(500).json(response(500, {}, { error: "Something went wrong. Please try again later" }));
+        }
     }
 }
 

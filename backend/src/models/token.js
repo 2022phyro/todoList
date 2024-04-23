@@ -25,7 +25,7 @@ const Token = sequelize.define('Token', {
 });
 Token.sync()
     .then(() => {
-        console.log('Token table created successfully.');
+        console.log('Token table synced successfully.');
     })
     .catch((error) => {
         console.error('Error creating Token table:', error);

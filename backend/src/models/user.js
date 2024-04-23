@@ -20,7 +20,7 @@ const User = sequelize.define('User', {
 );
 User.sync()
     .then(() => {
-        console.log('User table created successfully.');
+        console.log('User table synced successfully.');
     })
     .catch((error) => {
         console.error('Error creating User table:', error);
