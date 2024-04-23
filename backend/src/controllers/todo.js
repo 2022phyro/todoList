@@ -7,8 +7,8 @@ const { NotFoundError, NotPermittedError } = require('../utils/errors')
 async function createTodo (req, res) {
     try {
         const todoData = req.body
-			  todoData.userId = req.user.id
-        // validator.validateData(validator.todoSchema, todoData)
+        validator.validateData(validator.todoSchema, todoData)
+        todoData.userId = req.user.id
         const todo =  await TodoDAO.create(todoData)
         res.status(201).json(response(200, todo, {}))
     } catch (error) {
@@ -19,8 +19,8 @@ async function createTodo (req, res) {
 
 async function listTodos (req, res) {
     try {
-				const { title, createdAt } = req.query
-        const todos = await TodoDAO.list({title, createdAt}, req.user.id)
+				const { title, createdAt, page } = req.query
+        const todos = await TodoDAO.list({title, createdAt}, req.user.id, page)
         res.status(200).json(response(200, todos, {}))
     } catch (error) {
         console.error(error)

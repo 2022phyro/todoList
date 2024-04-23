@@ -6,8 +6,11 @@ const cors = require('cors');
 const helmet = require('helmet');
 const UserRouter = require('./src/routes/user');
 const TodoRouter = require('./src/routes/todo');
+const { response } = require('./src/utils/formats');
+const addRoutes = require('./src/routes');
 const app = express();
-const allowedOrigins = ['http://localhost:5173', 'http://example.com'];
+require('dotenv').config()
+const allowedOrigins = process.env.ALLOWED_ORIGINS.split(',');
 
  app.use(cors({
    origin: function (origin, callback) {
@@ -25,11 +28,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser())
 app.use(helmet());
+addRoutes(app)
 app.get('/', (req, res) => {
     res.send('Hello, World!');
 });
-app.use('/auth', UserRouter);
-app.use('/todos', TodoRouter)
+app.use((err, req, res, next) => {
+  console.error(err.stack)
+  res.status(500).json(response(500, {}, {error: 'Something went wrong. Please try again later'}))
+})
+
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

@@ -12,24 +12,31 @@ async function create(todoData) {
   }
 }
 
-async function list(filters, userId) {
-	filters = filters || {}
-    const where = {userId};
+async function list(filters = {}, userId, page, limit = 30) {
+  page = page || 1
+  const where = { userId };
 
-    if (filters.title) {
-      where.title = { [Op.iLike]: `%${filters.title}%` };
-    }
+  if (filters.title) {
+    where.title = { [Op.iLike]: `%${filters.title}%` };
+  }
 
-    if (filters.createdAt) {
-      where.createdAt = { [Op.lte]: filters.createdAt };
-    }
+  if (filters.createdAt) {
+    where.createdAt = { [Op.lte]: filters.createdAt };
+  }
 
-    const todos = await Todo.findAll({	
-      where,
-      order: [['createdAt', 'DESC']]
-    });
+  const { count, rows: todos } = await Todo.findAndCountAll({
+    where,
+    order: [['createdAt', 'DESC']],
+    offset: (page - 1) * limit,
+    limit
+  });
 
-    return todos;
+  return {
+    prev: page > 1 ? page - 1 : null,
+    todos,
+    next: count > page * limit ? page + 1 : null,
+    count
+  };
 }
 async function deleteToDO(todoId, userId) {
     const result = await Todo.destroy({
