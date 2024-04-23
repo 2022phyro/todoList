@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from 'react-router-dom'
+import { BASE_URL, inst } from "../utils/auth";
+
 import './Auth.css';
 const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSignUp, setSignup] = useState(false)
+  const [loading, setLoading] = useState(false)
 	const [submitError, setSubmitError] = useState('')
 	const navigate = useNavigate()
 
@@ -20,8 +23,9 @@ const Auth = () => {
 		setSignup(!isSignUp)
 	}
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true)
 
     // Basic validation
     if (!email || !password) {
@@ -29,15 +33,25 @@ const Auth = () => {
     }else if (password.length < 6) {
 			setSubmitError('Password should be at least 6 characters')
 		} else {
-			console.log("Email:", email);
-			console.log("Password:", password);
-			setSubmitError('')
-			navigate('/notes')
+      try {
+        const instance = await inst()
+        await instance.post(`${BASE_URL}/auth/${isSignUp? 'login': 'signup'}`, {
+          email,
+          password
+        });
+        setSubmitError('')
+        navigate('/notes')          
+      } catch (error) {
+        const { response } = error
+        const {errors: err} = response.data
+        setSubmitError(err.error)
+        console.error(response)
 
+      }
 		}
-
     setEmail("");
     setPassword("");
+    setLoading(false)
   };
 
   return (
@@ -62,8 +76,8 @@ const Auth = () => {
             />
           </label>
           <br />
-          <button className="btn" type="submit">{isSignUp? 'Login': 'Sign up'}</button>
-		{ submitError ? <p class="error">{submitError}</p>: <></> }
+          <button disabled={loading} className="btn" type="submit">{isSignUp? 'Login': 'Sign up'}</button>
+		{ submitError ? <p className="error">{submitError}</p>: <></> }
 					</form>
         {
             isSignUp

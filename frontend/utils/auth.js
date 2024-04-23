@@ -27,7 +27,7 @@ async function getToken() {
 }
 async function refreshToken() {
   try {
-    const response = await axios.post(`${BASE_URL}/refresh`, undefined, {
+    const response = await axios.post(`${BASE_URL}/auth/refresh`, undefined, {
       headers: {
         'Content-Type': 'application/json'
       },

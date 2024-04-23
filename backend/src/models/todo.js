@@ -20,6 +20,15 @@ const Todo = sequelize.define('Todo', {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
     },
+  userId: {
+    type: DataTypes.UUID,
+    allowNull: false,
+    references: {
+      model: 'User',
+      key: 'id'
+    },
+    onDelete: 'CASCADE'
+  }
 });
 
 Todo.sync()

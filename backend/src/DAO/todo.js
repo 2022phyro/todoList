@@ -1,4 +1,7 @@
 const Todo = require('../models/todo')
+const { Op } = require('sequelize')
+const { NotFoundError, NotPermittedError } = require('../utils/errors')
+
 
 async function create(todoData) {
   try {
@@ -9,48 +12,51 @@ async function create(todoData) {
   }
 }
 
-async function list() {
-  try {
-    const todos = await Todo.findAll()
-    return todos
-  } catch (error) {
-    console.error('Error fetching todos: ', error)
-  }
-}
+async function list(filters, userId) {
+	filters = filters || {}
+    const where = {userId};
 
-async function deleteToDO(todoId) {
-  try {
+    if (filters.title) {
+      where.title = { [Op.iLike]: `%${filters.title}%` };
+    }
+
+    if (filters.createdAt) {
+      where.createdAt = { [Op.lte]: filters.createdAt };
+    }
+
+    const todos = await Todo.findAll({	
+      where,
+      order: [['createdAt', 'DESC']]
+    });
+
+    return todos;
+}
+async function deleteToDO(todoId, userId) {
     const result = await Todo.destroy({
-      where: { id: todoId }
+			where: { id: todoId, userId: userId }
     })
 
     if (!result) {
-      console.error('Error deleting todo: No todo with this id found')
-      return
+      throw NotFoundError('No todo with this id found')
     }
 
     return result
-  } catch (error) {
-    console.error('Error deleting todo: ', error)
-  }
+
 }
 
-async function toggleChecked(todoId) {
-  try {
+async function toggleChecked(todoId, userId) {
     const todo = await Todo.findByPk(todoId)
-
     if (!todo) {
-      console.error('Error fetching todo: No todo with this id found')
-      return
+      throw NotFoundError('No todo with this id found')
     }
+		if (todo.userId !== userId) {
+			throw NotPermittedError('You are not the owner of this note')
+		}
 
     todo.completed = !todo.completed
     await todo.save()
 
     return todo
-  } catch (error) {
-    console.error('Error toggling todo checked status: ', error)
-  }
 }
 
 module.exports = {

@@ -5,6 +5,7 @@ header {
     top: 0;
     width: 100vw;
     position: relative;
+	display: flex;
 }
 header .profile {
     position: absolute;
@@ -72,17 +73,44 @@ header .profile.active p {
 	overflow: auto;
 	gap: 20px;
 }
-.notes-body input {
-	width: 80%;
+.search {
+	border: 1px solid #ccc;
+	height: 40px;
+	background: white;
+	max-width: 450px;
+	width: calc(100% - 100px);
+	display: flex;
+	align-items: center;
+	margin-left: 30px;
+	justify-content: space-between;
+	align-self: flex-end;
+}
+.search input[type="text"] {
+	border: none;
+	outline: none;
+	padding: 10px;
+	width: 100%;
+}
+.search .filters input[type="date"] {
+	width: 100px;
+	font-size: 13px;
+	border: 1px solid #ccc;
+	outline: none;
 }
 .notes-date-group {
 	font-family: 'Dosis', sans-serif;
-	/* border: 1px solid green; */
 	text-align: left;
 	padding: 0 20px;
 	position: relative;
 }
-
+.filters {
+	padding: 0;
+	display: flex;
+	flex-flow: row;
+	align-items: center;
+	gap: 15px;
+	margin: 0 20px;
+}
   .notes-date-group::before {
 	content: "";
 	position: absolute;
@@ -168,7 +196,46 @@ h2 {
 		width: 50px;
 		height: 50px;
 	}
+	header .profile {
+		right: 10px;
+	}
 	.add-note .text {
 		display: none;
 	}
+	.notes-body {
+		padding: 0 20px 150px 20px;
+	}
+
+}
+@media screen and (max-width: 400px){
+	.search {
+		border: 1px solid #ccc;
+		height: 40px;
+		background: white;
+		max-width: 450px;
+		width: calc(100% - 90px);
+		display: flex;
+		align-items: center;
+		margin-left: 30px;
+		justify-content: space-between;
+		align-self: flex-end;
+	}
+	.filters {
+		gap: 5px;
+		margin: 0 5px;
+	}
+	.search input[type="text"] {
+		border: none;
+		outline: none;
+		padding: 10px;
+		width: 100%;
+	}
+	.search .filters input[type="date"] {
+		width: 20px;
+		padding: 0;
+		font-size: 13px;
+		border: 1px solid #ccc;
+		outline: none;
+	}
+
 }
