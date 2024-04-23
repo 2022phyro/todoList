@@ -239,3 +239,16 @@ h2 {
 	}
 
 }
+
+.placeholder {
+	font-size: 24px;
+	font-weight: 600;
+	font-family: 'Dekko', sans-serif;
+	color: var(--primary-dark);
+}
+.err {
+	font-size: 14px;
+	font-weight: 400;
+	font-family: 'Dosis', sans-serif;
+	color: red;
+

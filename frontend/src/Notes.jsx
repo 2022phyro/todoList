@@ -5,14 +5,18 @@ import { BASE_URL, inst } from "../utils/auth";
 import NotesItem from "./NotesItem";
 import { formatDate } from "../utils/format";
 import PopUp from "./PopUp";
+import { Loader } from "./Loader";
 export default function Notes() {
   const [profile, setProfile] = useState(false);
   const [notes, setNotes] = useState([]);
+	const [empty, setEmpty] = useState('');
   const [groupedNotes, setGroupedNotes] = useState([]);
   const [actions, setActions] = useState({});
   const [popup, setPopup] = useState({});
+  const [page, setPage] = useState(1);
+  const loader = useRef(null);
   const [inputValue, setInputValue] = useState("");
-  const [dateValue, setDateValue] = useState(new Date(Date.now()).toISOString());
+  const [dateValue, setDateValue] = useState();
   const inputRef = useRef();
   const dateRef = useRef();
 
@@ -25,8 +29,11 @@ export default function Notes() {
     setProfile(!profile);
   };
 
-  const fetchTodos = async () => {
+  const fetchTodos = async (customPage) => {
 	try {
+    const curr = customPage || page;
+    if (!curr) return null;
+
 		let url = `${BASE_URL}/todos`;
 		const params = new URLSearchParams();
 		if (inputValue) {
@@ -35,15 +42,24 @@ export default function Notes() {
 		if (dateValue) {
 		  params.append('createdAt', dateValue);
 		}
+    params.append('page', curr);
 		if(params.toString()) {
 		  url += `?${params.toString()}`;
 		}
 		const instance = await inst(true);
 		const response = await instance.get(url);
 		const { data } = response.data;
-		setNotes(data);
+    console.log(data.next)
+		if (page === 1 && data.todos.length < 1) {
+			setEmpty('To get started, create a todo now')
+		} else {
+			setEmpty('')
+		}
+    setPage(data.next)
+    return data.todos
 	} catch (error) {
 		console.error('Error fetching todos: ', error);
+		setEmpty('Something went wrong. Please try again later or reload your browser')
 	  }
   };
   const act = (data) => {
@@ -161,7 +177,31 @@ export default function Notes() {
     handleActions();
   }, [actions]);
   useEffect(() => {
-    fetchTodos();
+    fetchTodos()
+    .then(todos => {
+      setNotes(todos)
+    })
+  }, []);
+  const handleObserver = (entities) => {
+    const target = entities[0];
+    if (target.isIntersecting) {
+      fetchTodos()
+      .then(todos => {
+        setNotes([...notes, ...todos])
+      });
+    }
+  };
+
+  useEffect(() => {
+    var options = {
+      root: null,
+      rootMargin: "10px",
+      threshold: 1.0
+    };
+    const observer = new IntersectionObserver(handleObserver, options);
+    if (loader.current) {
+      observer.observe(loader.current);
+    }
   }, []);
 
   return (
@@ -200,6 +240,10 @@ export default function Notes() {
             <NotesItem notes={notes} date={date} action={act} />
           </div>
         ))}
+		    {page ?
+				   <p> className="placeholder">To get started, add a note</p>
+					: <Loader/>
+				}
       </div>
       <button onClick={newNote} className="add-note b-pri">
         <Icon name="add" />

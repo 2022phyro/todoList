@@ -12,8 +12,8 @@ async function create(todoData) {
   }
 }
 
-async function list(filters = {}, userId, page, limit = 30) {
-  page = page || 1
+async function list(filters = {}, userId, page, limit = 4) {
+  page = parseInt(page) || 1
   const where = { userId };
 
   if (filters.title) {
@@ -23,7 +23,6 @@ async function list(filters = {}, userId, page, limit = 30) {
   if (filters.createdAt) {
     where.createdAt = { [Op.lte]: filters.createdAt };
   }
-
   const { count, rows: todos } = await Todo.findAndCountAll({
     where,
     order: [['createdAt', 'DESC']],

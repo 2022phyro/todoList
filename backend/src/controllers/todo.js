@@ -7,8 +7,8 @@ const { NotFoundError, NotPermittedError } = require('../utils/errors')
 async function createTodo (req, res) {
     try {
         const todoData = req.body
-        validator.validateData(validator.todoSchema, todoData)
         todoData.userId = req.user.id
+        validator.validateData(validator.todoSchema, todoData)
         const todo =  await TodoDAO.create(todoData)
         res.status(201).json(response(200, todo, {}))
     } catch (error) {
