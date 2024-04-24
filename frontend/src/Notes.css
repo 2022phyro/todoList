@@ -113,7 +113,7 @@ header .profile.active p {
 	margin: 0 20px;
 }
 .filter .icon:active {
-	opacity: 0.1;
+	opacity: 0.4;
 }
 .filters .icon:hover {
 	color: var(--primary-dark);
@@ -123,7 +123,7 @@ header .profile.active p {
 	cursor: pointer;
 	font-size: 24px;
 	font-weight: 800;
-	transition: all 0.3s ease;
+	transition: all 0.5s ease;
 }
   .notes-date-group::before {
 	content: "";
@@ -219,7 +219,10 @@ h2 {
 		display: none;
 	}
 	.notes-body {
-		padding: 0 20px 150px 20px;
+		padding: 20px 15px 150px 30px;
+	}
+	.note {
+		padding-right: 10px;
 	}
 
 }

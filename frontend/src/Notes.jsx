@@ -21,14 +21,14 @@ export default function Notes() {
   const pageRef = useRef(1);
   const handleSearch = () => {
     pageRef.current = 1;
-	 fetchTodos()
+	 fetchTodos(undefined, true)
      .then(todos => setNotes(todos))
   };
 
   const toggleProfile = () => {
     setProfile(!profile);
   };
-  const fetchTodos = async (customPage) => {
+  const fetchTodos = async (customPage, search) => {
 	try {
     const curr = customPage || pageRef.current
     if (!curr) return;
@@ -47,7 +47,7 @@ export default function Notes() {
 		const instance = await inst(true);
 		const response = await instance.get(url);
 		const { data } = response.data;
-		if (pageRef.current === 1 && data.todos.length < 1) {
+		if (pageRef.current === 1 && data.todos.length < 1 && !search) {
 			setEmpty({danger: false, msg:'To get started, create a todo now'})
 		} else {
 			setEmpty({})
@@ -70,7 +70,7 @@ export default function Notes() {
         try {
           const instance = await inst(true);
           await instance.delete(`${BASE_URL}/todos/${actions.id}`);
-          setNotes(notes.filter((note) => note.id !== actions.id));
+          setNotes((prevNotes) => prevNotes.filter((note) => note.id !== actions.id));
         } catch (error) {
           console.error(error);
         }
@@ -80,13 +80,13 @@ export default function Notes() {
         try {
           const instance = await inst(true);
           await instance.post(`${BASE_URL}/todos/${actions.id}`);
-          setNotes(
-            notes.map((note) =>
-              note.id === actions.id
-                ? { ...note, completed: !note.completed }
-                : note
-            )
-          );
+          setNotes((prevNotes) =>
+          prevNotes.map((note) =>
+            note.id === actions.id
+              ? { ...note, completed: !note.completed }
+              : note
+          )
+        );
         } catch (error) {
           console.error(error);
         }
@@ -167,6 +167,8 @@ export default function Notes() {
       }, []);
       groupedNotes.sort((a, b) => new Date(b[0]) - new Date(a[0]));
       setGroupedNotes(groupedNotes);
+    } else {
+      setGroupedNotes([])
     }
   }, [notes]);
   useEffect(() => {

@@ -1,24 +1,8 @@
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Landing.css';
-import { getToken } from '../utils/auth';
 
 export default function LandingPage () {
-  const [token, setToken] = useState('')
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const checkToken = async () => {
-      const fetchedToken = await getToken();
-      setToken(fetchedToken);
-      if (fetchedToken) {
-        navigate('/notes');
-      }
-    };
-
-    checkToken();
-  }, [navigate]);
-
   const handleClick = () => {
     navigate('/auth');
   };
