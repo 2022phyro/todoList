@@ -109,6 +109,19 @@ header .profile.active p {
 	gap: 15px;
 	margin: 0 20px;
 }
+.filter .icon:active {
+	opacity: 0.1;
+}
+.filters .icon:hover {
+	color: var(--primary-dark);
+	transform: scale(1.1);
+}
+.filters .icon {
+	cursor: pointer;
+	font-size: 24px;
+	font-weight: 800;
+	transition: all 0.3s ease;
+}
   .notes-date-group::before {
 	content: "";
 	position: absolute;

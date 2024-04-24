@@ -15,12 +15,12 @@ export default function Notes() {
   const [popup, setPopup] = useState({});
   const loader = useRef(null);
   const [inputValue, setInputValue] = useState("");
-  const [dateValue, setDateValue] = useState();
+  const [dateValue, setDateValue] = useState('');
   const inputRef = useRef();
   const dateRef = useRef();
   const pageRef = useRef(1);
-
   const handleSearch = () => {
+    pageRef.current = 1;
 	 fetchTodos()
      .then(todos => setNotes(todos))
   };
@@ -28,11 +28,10 @@ export default function Notes() {
   const toggleProfile = () => {
     setProfile(!profile);
   };
-
-  const fetchTodos = async () => {
+  const fetchTodos = async (customPage) => {
 	try {
-    if (pageRef.current === null) return;
-    const curr = pageRef.current
+    const curr = customPage || pageRef.current
+    if (!curr) return;
 		let url = `${BASE_URL}/todos`;
 		const params = new URLSearchParams();
 		if (inputValue) {
@@ -48,8 +47,7 @@ export default function Notes() {
 		const instance = await inst(true);
 		const response = await instance.get(url);
 		const { data } = response.data;
-    console.log("Success", pageRef)
-		if (pageRef === 1 && data.todos.length < 1) {
+		if (pageRef.current === 1 && data.todos.length < 1) {
 			setEmpty({danger: false, msg:'To get started, create a todo now'})
 		} else {
 			setEmpty({})
@@ -167,7 +165,6 @@ export default function Notes() {
         }
         return groups;
       }, []);
-      console.log(groupedNotes);
       groupedNotes.sort((a, b) => new Date(b[0]) - new Date(a[0]));
       setGroupedNotes(groupedNotes);
     }
@@ -178,24 +175,31 @@ export default function Notes() {
 
   const handleObserver = (entities) => {
     const target = entities[0];
-		if (target.isIntersecting) {
-      fetchTodos(pageRef)
+		if (target.isIntersecting && pageRef.current !== null) {
+      fetchTodos()
       .then(todos => {
         setNotes((notes) => [...notes, ...todos])
       })
 		}
 	}
-  useEffect(() => {
-    var options = {
-      root: null,
-      rootMargin: "0px",
-      threshold: 1.0
-    };
-    const observer = new IntersectionObserver(handleObserver, options);
+useEffect(() => {
+  const options = {
+    root: null,
+    rootMargin: "0px",
+    threshold: 1.0
+  };
+  const observer = new IntersectionObserver(handleObserver, options);
+
+  if (loader.current) {
+    observer.observe(loader.current);
+  }
+
+  return () => {
     if (loader.current) {
-      observer.observe(loader.current);
+      observer.unobserve(loader.current);
     }
-  }, []);
+  };
+}, [loader.current]); // Run this effect whenever loader.current changes
 
   return (
     <div className="notes-wrapper">

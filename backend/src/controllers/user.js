@@ -100,7 +100,7 @@ async function deleteUser(req, res) {
 async function refreshToken (req, res) {
   try {
     const refresh = req.cookies.refresh
-		console.log("refresh", refresh)
+		
     const tokens = await refreshJWTToken(refresh)
     res.cookie('refresh', tokens.refreshToken, { maxAge: Number(process.env.MAX_AGE)})// , httpOnly: true }) // Add htttpOnly later on
     return res.status(200).json(response(200, tokens, {}))

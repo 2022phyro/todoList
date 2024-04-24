@@ -22,7 +22,7 @@ async function authenticateJWT (req, res, next) {
         return res.status(401).json(response(401, {}, { error: msg }))
       }
       const decoded = jwt.decode(token)
-      console.log(decoded)
+      
       const user = await getUser(decoded.sub)
       req.user = user
       req.token = token

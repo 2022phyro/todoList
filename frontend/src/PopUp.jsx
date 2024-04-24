@@ -15,7 +15,6 @@ export default function PopUp(props) {
   const handleAdd = async () => {
     setLoading(true);
     if (title || description) {
-      console.log({ title, description });
       try {
         const instance = await inst(true);
         const response = await instance.post(`${BASE_URL}/todos`, {
@@ -23,12 +22,11 @@ export default function PopUp(props) {
           description,
         });
         const { data } = response.data;
-        console.log(data);
         setError("");
         props.close();
         props.send(data);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     } else {
       setError("Please type something");
@@ -45,7 +43,7 @@ export default function PopUp(props) {
       await instance.post(`${BASE_URL}/auth/logout`);
       props.close();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       navigate("/");
     }
@@ -57,7 +55,7 @@ export default function PopUp(props) {
       await instance.delete(`${BASE_URL}/auth`);
       props.close();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       navigate("/");
     }

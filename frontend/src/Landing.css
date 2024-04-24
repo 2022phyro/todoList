@@ -1,14 +1,15 @@
 .landing {
     display: flex;
     width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
     position: fixed;
+    flex-flow: row wrap;
     top: 0;
     left: 0;
-    flex-basis: 50%;
     align-items: center;
     justify-content: center;
     background: #E1BB6F;
+    overflow: scroll;
 }
 .landing-text {
     width: 50%;
@@ -46,4 +47,17 @@
     position: absolute;
     top: 0;
     right: 0;
+}
+@media screen and (max-width: 768px) {
+    .landing {
+        flex-flow: column;
+        /* height: fit-content; */
+    }
+    .landing-text {
+        width: 100%;
+    }
+    .landing-img {
+        width: 80%;
+        flex-shrink: 0;
+    }
 }

@@ -1,5 +1,4 @@
 const TodoDAO = require('../DAO/todo')
-const supabaseClient = require('../config/supabase')
 const validator = require('../utils/validate')
 const { response } = require('../utils/formats')
 const { NotFoundError, NotPermittedError } = require('../utils/errors')

@@ -20,8 +20,11 @@ async function list(filters = {}, userId, page, limit = 4) {
     where.title = { [Op.iLike]: `%${filters.title}%` };
   }
 
-  if (filters.createdAt) {
-    where.createdAt = { [Op.lte]: filters.createdAt };
+  if (filters.createdAt && Date.parse(filters.createdAt)) {
+
+    const date = new Date(filters.createdAt);
+    date.setDate(date.getDate() + 1);
+    where.createdAt = { [Op.lte]: date };
   }
   const { count, rows: todos } = await Todo.findAndCountAll({
     where,
