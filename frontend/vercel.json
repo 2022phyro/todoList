@@ -10,8 +10,13 @@
     ],
     "routes": [
         {
+            "src": "/(.*).(js|css|json|png|jpg|svg)",
+            "dest": "/dist/$1.$2",
+            "continue": true
+        },
+        {
             "src": "/(.*)",
-            "dest": "/index.html"
+            "dest": "/dist/index.html"
         }
     ]
 }
