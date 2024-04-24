@@ -6,7 +6,7 @@ const { createToken, refreshToken: refreshJWTToken } = require('../utils/tokens'
 const { validateData, userSchema } = require('../utils/validate');
 const { LoginError, NotFoundError, TokenError } = require('../utils/errors');
 
-const MAX_AGE = process.env.MAX_AGE
+const MAX_AGE = Number(process.env.MAX_AGE)
 async function createUser(req, res) {
   try {
     validateData(userSchema, req.body)
@@ -33,6 +33,7 @@ async function loginUser(req, res) {
     const { email, password } = req.body;
     const user = await UserDAO.loginUser(email, password);
     const tokens = createToken(user);
+    console.log(tokens)
     res.cookie('refresh', tokens.refreshToken, { maxAge: MAX_AGE, httpOnly: true })
     res.status(200).json(tokens);
   } catch (error) {
