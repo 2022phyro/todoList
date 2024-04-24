@@ -6,14 +6,14 @@ const { createToken, refreshToken: refreshJWTToken } = require('../utils/tokens'
 const { validateData, userSchema } = require('../utils/validate');
 const { LoginError, NotFoundError, TokenError } = require('../utils/errors');
 
-const MAX_AGE = Number(process.env.MAX_AGE)
+const MAX_AGE = Number(process.env.MAX_AGE) ||
 async function createUser(req, res) {
   try {
     validateData(userSchema, req.body)
     const { email, password } = req.body;
     const user = await UserDAO.createUser(email, password);
     const tokens = createToken(user);
-    res.cookie('refresh', tokens.refreshToken, { maxAge: MAX_AGE, httpOnly: true })
+    res.cookie('refresh', tokens.refreshToken, { maxAge: MAX_AGE, httpOnly: true, sameSite: 'none', secure: true })
     res.status(201).json(response(201, tokens, {}));
   } catch (error) {
     if (error.message.startsWith('AJV Validation failed:')) {
@@ -33,8 +33,8 @@ async function loginUser(req, res) {
     const { email, password } = req.body;
     const user = await UserDAO.loginUser(email, password);
     const tokens = createToken(user);
-    console.log(tokens)
-    res.cookie('refresh', tokens.refreshToken, { maxAge: MAX_AGE, httpOnly: true })
+    console.log(tokens, typeof MAX_AGE)
+    res.cookie('refresh', tokens.refreshToken, { maxAge: MAX_AGE, httpOnly: true, sameSite: 'none', secure: true })
     console.log("refresh", res.cookie.refresh)
     res.status(200).json(tokens);
   } catch (error) {
@@ -104,7 +104,7 @@ async function refreshToken (req, res) {
     const refresh = req.cookies.refresh
 		
     const tokens = await refreshJWTToken(refresh)
-    res.cookie('refresh', tokens.refreshToken, { maxAge: Number(process.env.MAX_AGE), httpOnly: true})
+    res.cookie('refresh', tokens.refreshToken, { maxAge: MAX_AGE, httpOnly: true, sameSite: 'none', secure: true })
     return res.status(200).json(response(200, tokens, {}))
   } catch (error) {
     if (error instanceof TokenError) {
