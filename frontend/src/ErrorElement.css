@@ -1,0 +1,27 @@
+.error h1 {
+    font-family: 'Dekko', sans-serif;
+    font-size: 40px;
+    color: var(--primary-dark);
+    font-weight: 800;
+}
+
+.error p {
+    font-family: 'Dosis', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--primary);
+}
+.error {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    gap: 30px;
+}
+.error button {
+    font-size: 16px;
+    font-family: 'Dekko', sans-serif;
+    background: var(--primary-dark);
+    color: white;
+}
