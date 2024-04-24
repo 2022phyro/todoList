@@ -15,9 +15,10 @@
     height: 100%;
     padding: 2em;
     border-radius: 8px;
-    background-color: white;
+    background-color: var(--bg);
     box-shadow: 0 0 1em #00000033;
     transform: rotate(-5deg);
+    color: var(--bg-text);
     display: flex;
     flex-flow: column;
     align-items: center;

@@ -4,6 +4,9 @@
   font-weight: 400;
   --primary: #E1BB6F;
   --primary-dark: #b6985b;
+  --bg: #242424;
+  --bg-text: white;
+  --text: white;
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
@@ -12,6 +15,34 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+    --bg: white;
+    --bg-text: #242424;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+.b {
+  font-weight: 600;
+}
+.pri {
+  color: var(--primary);
+}
+.click {
+  cursor: pointer;
+}
+.error {
+	font-size: 12px;
+	color: red;
 }
 * {
   padding: 0;
@@ -48,8 +79,9 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: var(--bg);
   outline: none;
+  color: var(--bg-text);
   cursor: pointer;
   transition: all 0.25s ease;
 }
@@ -67,7 +99,7 @@ button.btn {
     outline: none;
     cursor: pointer;
     transition: all 0.25s ease;
-    color: white;
+    color: var(--bg-text);
 }
 button:disabled {
   opacity: 0.3;
@@ -82,31 +114,6 @@ button:active {
   opacity: 0.5;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}
-.b {
-  font-weight: 600;
-}
-.pri {
-  color: var(--primary);
-}
-.click {
-  cursor: pointer;
-}
-.error {
-	font-size: 12px;
-	color: red;
-}
 
 .material-symbols-outlined {
   font-variation-settings:

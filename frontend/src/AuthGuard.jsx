@@ -9,9 +9,17 @@ const AuthGuard = ({ children }) => {
 
   useEffect(() => {
     const fetchToken = async () => {
-      const token = await getToken();
-      setCurrentToken(token);
-      setLoading(false);
+      try {
+        const token = await getToken();
+        setCurrentToken(token);
+      } catch (error) {
+        console.error(error)
+      } finally {
+        setLoading(false);
+      }
+      // const token = await getToken();
+      // setCurrentToken(token);
+      // setLoading(false);
     };
 
     fetchToken();

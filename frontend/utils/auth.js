@@ -55,4 +55,4 @@ const inst = async (auth) => {
   return instance
 }
 
-export { getToken, inst, BASE_URL }
+export { getToken, inst, BASE_URL, authStore }

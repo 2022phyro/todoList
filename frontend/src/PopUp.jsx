@@ -1,10 +1,8 @@
 import "./PopUp.css";
 import { BASE_URL, inst } from "../utils/auth";
 import { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 
 export default function PopUp(props) {
-  const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -45,7 +43,7 @@ export default function PopUp(props) {
     } catch (error) {
       console.error(error);
     } finally {
-      navigate("/");
+      window.location.href = "/";
     }
   };
 
@@ -57,7 +55,7 @@ export default function PopUp(props) {
     } catch (error) {
       console.error(error);
     } finally {
-      navigate("/");
+      window.location.href = "/";
     }
     setLoading(false);
   };

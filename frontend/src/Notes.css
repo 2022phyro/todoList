@@ -19,7 +19,7 @@ header .profile {
     gap: 5px;
     width: fit-content;
     border-radius: 50%;
-    background: white;
+    background: var(--bg);
 }
 header .icon {
     font-size: 30px;
@@ -28,7 +28,7 @@ header .icon {
 }
 header .profile p {
     font-family: 'Dekko', sans-serif;
-    background: white;
+    background: var(--bg);
     font-size: 16px;
     font-weight: 600;
     color: var(--primary-dark);
@@ -59,6 +59,8 @@ header .profile.active p {
 	flex-flow: row wrap;
 	justify-content: center;
 	align-items: center;
+	color: var(--bg-text);
+
 }
 .notes-body {
 	height: calc(100vh - 50px);
@@ -74,10 +76,11 @@ header .profile.active p {
 .search {
 	border: 1px solid #ccc;
 	height: 40px;
-	background: white;
+	background: var(--bg);
 	max-width: 450px;
 	width: calc(100% - 100px);
 	display: flex;
+	color: var(--text);
 	align-items: center;
 	margin-left: 30px;
 	justify-content: space-between;
@@ -158,6 +161,7 @@ h2 {
 .note:hover {
 	background-color: rgb(255, 249, 240);
 }
+
 .note h3 {
 	display: flex;
 	flex-flow: row;
@@ -204,6 +208,7 @@ h2 {
 	.add-note {
 		content: "";
 		border-radius: 50%;
+		right: 20px;
 		width: 50px;
 		height: 50px;
 	}
@@ -222,7 +227,6 @@ h2 {
 	.search {
 		border: 1px solid #ccc;
 		height: 40px;
-		background: white;
 		max-width: 450px;
 		width: calc(100% - 90px);
 		display: flex;
@@ -265,4 +269,11 @@ h2 {
 	font-family: 'Dosis', sans-serif;
 	color: red;
 }
-
+@media (prefers-color-scheme: dark) {
+	.note:hover {
+		background-color: rgb(10, 10, 10);
+	}
+	.placeholder {
+		color: var(--primary);
+	}
+}

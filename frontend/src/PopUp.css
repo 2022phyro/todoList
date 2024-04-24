@@ -17,7 +17,7 @@
     width: 100%;
     border: 1px solid var(--primary-dark);
     box-shadow: 1px 1px 1px var(--primary-dark);
-    background: white;
+    background: var(--bg);
     max-height: 90vh;
     padding: 30px;
     position: relative;
@@ -25,6 +25,7 @@
     transform: rotate(1deg);
     display: flex;
     flex-flow: column;
+    color: var(--bg-text);
     gap: 20px;
 }
 .new-note > * {
@@ -36,6 +37,7 @@
 .new-note textarea {
     border: none;
     outline: none;
+    background: var(--bg);
 }
 .writing-area {
     border: 1px solid var(--primary);
@@ -88,8 +90,9 @@
     width: 280px;
     height: 200px;
     border: 1px solid var(--primary-dark);
-    background: white;
+    background: var(--bg);
     box-shadow: 1px 1px 1px var(--primary-dark);
+    color: var(--bg-text);
     display: flex;
     flex-flow: column;
     font-family: 'Dosis', sans-serif;
