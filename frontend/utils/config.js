@@ -1,1 +1,1 @@
-export const BASE_HOST = "http://localhost:3000";
+export const BASE_HOST = "https://todo-101-66e126634b45.herokuapp.com";

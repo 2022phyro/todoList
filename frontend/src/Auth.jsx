@@ -6,7 +6,7 @@ import './Auth.css';
 const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isSignUp, setSignup] = useState(false)
+  const [isSignUp, setSignup] = useState(true)
   const [loading, setLoading] = useState(false)
 	const [submitError, setSubmitError] = useState('')
 	const navigate = useNavigate()

@@ -11,7 +11,7 @@
     font-weight: 600;
     color: var(--primary);
 }
-.error {
+.error-element {
     display: flex;
     flex-flow: column;
     align-items: center;
