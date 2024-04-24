@@ -13,7 +13,7 @@ async function createUser(req, res) {
     const { email, password } = req.body;
     const user = await UserDAO.createUser(email, password);
     const tokens = createToken(user);
-    res.cookie('refresh', tokens.refreshToken, { maxAge: MAX_AGE, httpOnly: true })
+    res.cookie('refresh', tokens.refreshToken, { maxAge: MAX_AGE, httpOnly: true, secure: true })
     res.status(201).json(response(201, tokens, {}));
   } catch (error) {
     if (error.message.startsWith('AJV Validation failed:')) {
@@ -33,7 +33,7 @@ async function loginUser(req, res) {
     const { email, password } = req.body;
     const user = await UserDAO.loginUser(email, password);
     const tokens = createToken(user);
-    res.cookie('refresh', tokens.refreshToken, { maxAge: MAX_AGE, })//httpOnly: true })
+    res.cookie('refresh', tokens.refreshToken, { maxAge: MAX_AGE, httpOnly: true, secure: true })
     res.status(200).json(tokens);
   } catch (error) {
     if (error.message.startsWith('AJV Validation failed:')) {
@@ -102,7 +102,7 @@ async function refreshToken (req, res) {
     const refresh = req.cookies.refresh
 		
     const tokens = await refreshJWTToken(refresh)
-    res.cookie('refresh', tokens.refreshToken, { maxAge: Number(process.env.MAX_AGE)})// , httpOnly: true }) // Add htttpOnly later on
+    res.cookie('refresh', tokens.refreshToken, { maxAge: Number(process.env.MAX_AGE), httpOnly: true, secure: true })
     return res.status(200).json(response(200, tokens, {}))
   } catch (error) {
     if (error instanceof TokenError) {
