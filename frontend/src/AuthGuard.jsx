@@ -1,27 +1,27 @@
 import { useState, useEffect } from 'react';
-import { Navigate, Route } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { getToken } from '../utils/auth';
 import { Loader } from './Loader';
 
 const AuthGuard = ({ children }) => {
-    const [currentToken, setCurrentToken] = useState(null);
-    const [loading, setLoading] = useState(true);
+  const [currentToken, setCurrentToken] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchToken = async () => {
-            const token = await getToken();
-            setCurrentToken(token);
-            setLoading(false);
-        };
+  useEffect(() => {
+    const fetchToken = async () => {
+      const token = await getToken();
+      setCurrentToken(token);
+      setLoading(false);
+    };
 
-        fetchToken();
-    }, []);
+    fetchToken();
+  }, []);
 
-    if (loading) {
-        return <Loader />;
-    }
+  if (loading) {
+    return <Loader />;
+  }
 
-    return currentToken ? children : <Navigate to="" />;
+  return currentToken ? children : <Navigate to="/" />;
 };
 
 export default AuthGuard;

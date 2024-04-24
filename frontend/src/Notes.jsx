@@ -13,27 +13,26 @@ export default function Notes() {
   const [groupedNotes, setGroupedNotes] = useState([]);
   const [actions, setActions] = useState({});
   const [popup, setPopup] = useState({});
-  const [page, setPage] = useState(1);
   const loader = useRef(null);
   const [inputValue, setInputValue] = useState("");
   const [dateValue, setDateValue] = useState();
   const inputRef = useRef();
   const dateRef = useRef();
+  const pageRef = useRef(1);
 
-  const handleSearch = async () => {
-	await fetchTodos()
+  const handleSearch = () => {
+	 fetchTodos()
+     .then(todos => setNotes(todos))
   };
 
   const toggleProfile = () => {
-    console.log("yay");
     setProfile(!profile);
   };
 
-  const fetchTodos = async (customPage) => {
+  const fetchTodos = async () => {
 	try {
-    const curr = customPage || page;
-    if (!curr) return null;
-
+    if (pageRef.current === null) return;
+    const curr = pageRef.current
 		let url = `${BASE_URL}/todos`;
 		const params = new URLSearchParams();
 		if (inputValue) {
@@ -49,13 +48,13 @@ export default function Notes() {
 		const instance = await inst(true);
 		const response = await instance.get(url);
 		const { data } = response.data;
-    console.log(data.next)
-		if (page === 1 && data.todos.length < 1) {
+    console.log("Success", pageRef)
+		if (pageRef === 1 && data.todos.length < 1) {
 			setEmpty({danger: false, msg:'To get started, create a todo now'})
 		} else {
 			setEmpty({})
 		}
-    setPage(data.next)
+    pageRef.current = data.next;
     return data.todos
 	} catch (error) {
 		console.error('Error fetching todos: ', error);
@@ -64,7 +63,6 @@ export default function Notes() {
   };
   const act = (data) => {
     setActions(data);
-    console.log(data);
   };
 
   const handleActions = async () => {
@@ -177,26 +175,20 @@ export default function Notes() {
   useEffect(() => {
     handleActions();
   }, [actions]);
-  useEffect(() => {
-    fetchTodos()
-    .then(todos => {
-      setNotes(todos)
-    })
-  }, []);
+
   const handleObserver = (entities) => {
     const target = entities[0];
-    if (target.isIntersecting) {
-      fetchTodos()
+		if (target.isIntersecting) {
+      fetchTodos(pageRef)
       .then(todos => {
-        setNotes([...notes, ...todos])
-      });
-    }
-  };
-
+        setNotes((notes) => [...notes, ...todos])
+      })
+		}
+	}
   useEffect(() => {
     var options = {
       root: null,
-      rootMargin: "10px",
+      rootMargin: "0px",
       threshold: 1.0
     };
     const observer = new IntersectionObserver(handleObserver, options);
@@ -242,7 +234,9 @@ export default function Notes() {
           </div>
         ))}
         {empty.msg && <p className={`${empty.danger ? 'err' : 'placeholder'}`}>{empty.msg}</p>}
-		    {page && !empty.msg && <Loader/>}
+		    {pageRef.current && !empty.msg && (
+          <div ref={loader}><Loader/></div>
+        )}
       </div>
       <button onClick={newNote} className="add-note b-pri">
         <Icon name="add" />
@@ -252,3 +246,4 @@ export default function Notes() {
     </div>
   );
 }
+
