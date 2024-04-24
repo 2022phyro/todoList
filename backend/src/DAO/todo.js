@@ -12,7 +12,7 @@ async function create(todoData) {
   }
 }
 
-async function list(filters = {}, userId, page, limit = 4) {
+async function list(filters = {}, userId, page, limit = 30) {
   page = parseInt(page) || 1
   const where = { userId };
 
