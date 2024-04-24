@@ -9,7 +9,7 @@ import { Loader } from "./Loader";
 export default function Notes() {
   const [profile, setProfile] = useState(false);
   const [notes, setNotes] = useState([]);
-	const [empty, setEmpty] = useState('');
+	const [empty, setEmpty] = useState({});
   const [groupedNotes, setGroupedNotes] = useState([]);
   const [actions, setActions] = useState({});
   const [popup, setPopup] = useState({});
@@ -51,15 +51,15 @@ export default function Notes() {
 		const { data } = response.data;
     console.log(data.next)
 		if (page === 1 && data.todos.length < 1) {
-			setEmpty('To get started, create a todo now')
+			setEmpty({danger: false, msg:'To get started, create a todo now'})
 		} else {
-			setEmpty('')
+			setEmpty({})
 		}
     setPage(data.next)
     return data.todos
 	} catch (error) {
 		console.error('Error fetching todos: ', error);
-		setEmpty('Something went wrong. Please try again later or reload your browser')
+		setEmpty({danger: true, msg:'Something went wrong. Please try again later or reload your browser'})
 	  }
   };
   const act = (data) => {
@@ -135,6 +135,7 @@ export default function Notes() {
           },
           send: function (data) {
             setNotes([...notes, data]);
+            setEmpty({})
           },
         });
         break;
@@ -240,10 +241,8 @@ export default function Notes() {
             <NotesItem notes={notes} date={date} action={act} />
           </div>
         ))}
-		    {page ?
-				   <p> className="placeholder">To get started, add a note</p>
-					: <Loader/>
-				}
+        {empty.msg && <p className={`${empty.danger ? 'err' : 'placeholder'}`}>{empty.msg}</p>}
+		    {page && !empty.msg && <Loader/>}
       </div>
       <button onClick={newNote} className="add-note b-pri">
         <Icon name="add" />

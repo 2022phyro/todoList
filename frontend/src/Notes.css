@@ -64,9 +64,7 @@ header .profile.active p {
 	height: calc(100vh - 50px);
 	width: inherit;
 	max-width: 100%;
-	padding: 0 60px 150px 60px;
-	padding-top: 0;
-	padding-bottom: 150px;
+	padding: 20px 60px 150px 60px;
 	border: 0px 2px 0px 2px solid var(--primary-dark);
 	display: flex;
 	flex-flow: column;
@@ -241,14 +239,17 @@ h2 {
 }
 
 .placeholder {
+	padding: 20px;
 	font-size: 24px;
 	font-weight: 600;
 	font-family: 'Dekko', sans-serif;
 	color: var(--primary-dark);
 }
 .err {
+	padding: 20px;
 	font-size: 14px;
 	font-weight: 400;
 	font-family: 'Dosis', sans-serif;
 	color: red;
+}
 
