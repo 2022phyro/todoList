@@ -35,6 +35,7 @@ async function loginUser(req, res) {
     const tokens = createToken(user);
     console.log(tokens)
     res.cookie('refresh', tokens.refreshToken, { maxAge: MAX_AGE, httpOnly: true })
+    console.log("refresh", res.cookie.refresh)
     res.status(200).json(tokens);
   } catch (error) {
     if (error.message.startsWith('AJV Validation failed:')) {
