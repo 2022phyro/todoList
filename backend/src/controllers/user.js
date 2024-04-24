@@ -6,7 +6,7 @@ const { createToken, refreshToken: refreshJWTToken } = require('../utils/tokens'
 const { validateData, userSchema } = require('../utils/validate');
 const { LoginError, NotFoundError, TokenError } = require('../utils/errors');
 
-const MAX_AGE = Number(process.env.MAX_AGE) ||
+const MAX_AGE = Number(process.env.MAX_AGE)
 async function createUser(req, res) {
   try {
     validateData(userSchema, req.body)
