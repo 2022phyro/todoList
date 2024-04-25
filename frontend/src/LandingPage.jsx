@@ -6,9 +6,13 @@ export default function LandingPage () {
   const handleClick = () => {
     navigate('/auth');
   };
+  const goToNotes = () => {
+    navigate('/notes');
+  };
   
   return (
     <div className="landing">
+      <button className="to-notes" onClick={goToNotes}>Go to your notes</button>
       <div className="landing-text">
         <h1>Interactive To-do list</h1>
         <button onClick={handleClick}>Get Started</button>

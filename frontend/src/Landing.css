@@ -12,6 +12,12 @@
     overflow-y: auto;
     overflow-x: hidden;
 }
+.to-notes {
+    position: fixed;
+    font-family: 'Dekko', sans-serif;
+    top: 15px;
+    right: 30px;
+}
 .landing-text {
     width: 50%;
     display: flex;
@@ -20,7 +26,7 @@
     align-items: flex-start;
     font-family: 'Dekko', sans-serif;
     font-weight: 600px;
-    padding: 30px;
+    padding: 60px 30px;
     text-align: left;
 }
 .landing-text p {
